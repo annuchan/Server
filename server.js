@@ -138,6 +138,83 @@ app.get("/api/teachers", async (req, res) => {
     }
 });
 
+app.get("/api/events", async (req, res) => {
+    try {
+        const result = await sql.query(`
+            SELECT 
+                *
+            FROM Measure e
+            LEFT JOIN Photo p ON t.id_photo = p.id;
+        `);
+
+        const events = result.recordset.map(measure => ({
+            id: measure.Id,
+            title: measure.Title,
+            describe: measure.Describe,
+            type: measure.Typ,
+            date: measure.Datee,
+            imageName: measure.imagename,
+            imageData: measure.imagedata ? Buffer.from(measure.imagedata).toString("base64") : null,
+        }));
+        res.json(events);
+    } catch (error) {
+        console.error("Ошибка при получении данных о мероприятиях:", error);
+        res.status(500).send("Ошибка сервера");
+    }
+});
+app.get("/api/Important_information", async (req, res) => {
+    try {
+        const result = await sql.query(`
+            SELECT 
+                *
+            FROM Important_information e
+            LEFT JOIN Photo p ON t.id_photo = p.id;
+        `);
+
+        const important_informations = result.recordset.map(important_information => ({
+            id: important_information.Id,
+            title: important_information.Title,
+            describe: important_information.Describe,
+            term: important_information.Term,
+            date: important_information.Datee,
+            imageName: important_information.imagename,
+            imageData: important_information.imagedata ? Buffer.from(important_information.imagedata).toString("base64") : null,
+        }));
+        res.json(important_informations);
+    } catch (error) {
+        console.error("Ошибка при получении данных о important_informations:", error);
+        res.status(500).send("Ошибка сервера");
+    }
+});
+
+app.get("/api/School_asset", async (req, res) => {
+    try {
+        const result = await sql.query(`
+            SELECT 
+                *
+            FROM School_asset s
+             LEFT JOIN Teachers t ON s.id_Teacher = p.id
+            LEFT JOIN Photo p ON t.id_photo = p.id;
+        `);
+
+        const school_asset = result.recordset.map(school_asset => ({
+            id: school_asset.Id,
+            title: school_asset.Title,
+            describe: school_asset.Describe,
+            place: school_asset.Place,
+            imageName: school_asset.imagename,
+            imageData: school_asset.imagedata ? Buffer.from(school_asset.imagedata).toString("base64") : null,
+            firstName: school_asset.LastName,
+            secondname: school_asset.FirstName,
+            thirsdname: school_asset.MiddleName,
+        }));
+        res.json(school_asset);
+    } catch (error) {
+        console.error("Ошибка при получении данных о school_asset:", error);
+        res.status(500).send("Ошибка сервера");
+    }
+});
+
 app.listen(3000, () => {
     console.log("🚀 Сервер запущен на порту 3000");
 });
