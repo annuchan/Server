@@ -1,10 +1,12 @@
 const express = require("express");
-const sql = require("../server");
+const sql = require("mssql");
 const router = express.Router();
+const dbConfig = require('../config/dbConfig');
 
-router.get("/director", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const result = await sql.query(`
+        const pool = await sql.connect(dbConfig);
+        const result = await pool.request().query(`
             SELECT 
                 a.LastName, a.FirstName, a.MiddleName, i.imagedata
             FROM Administration a
