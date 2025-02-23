@@ -1,5 +1,5 @@
 module.exports = {
-    server: "192.168.0.5",
+    server: "192.168.0.2",
     user: 'ANNUCHAN',
     password: 'Bhbyf2004',
     database: "MyIdealClass",

@@ -6,18 +6,23 @@ const dbConfig = require('../config/dbConfig');
 router.get('/', async (req, res) => {
   try {
     const pool = await sql.connect(dbConfig);
-    const result = await pool.request().query(`
-      SELECT 
-          t.Id, t.LastName, t.FirstName, t.MiddleName, 
-          t.Specialty, t.Education, t.Experience, 
-          t.Academic_Degree, t.Title, t.Certificate_Teacher, 
-          t.Qualification, t.Professional_development, 
-          t.PhoneNumber, t.Address_Teacher, t.Date_Of_Birth, 
-          t.Id_Subject, t.Id_Passport, 
-          p.imagename, p.imagedata
-      FROM Teachers t
-      LEFT JOIN Photo p ON t.id_image_teacher = p.id;
-    `);
+    const subject = req.query.subject;  // Получаем параметр 'subject' из запроса
+  const query = `
+    SELECT 
+      t.Id, t.LastName, t.FirstName, t.MiddleName, 
+      t.Specialty, t.Education, t.Experience, 
+      t.Academic_Degree, t.Title, t.Certificate_Teacher, 
+      t.Qualification, t.Professional_development, 
+      t.PhoneNumber, t.Address_Teacher, t.Date_Of_Birth, 
+      t.Id_Subject, t.Id_Passport, 
+      p.imagename, p.imagedata
+  FROM Teachers t
+  LEFT JOIN Photo p ON t.id_image_teacher = p.id
+  ${subject ? `WHERE t.Specialty = '${subject}'` : ''}
+`;
+
+const result = await pool.request().query(query);
+
 
     const teachers = result.recordset.map(teacher => ({
       id: teacher.Id,

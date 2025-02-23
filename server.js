@@ -10,8 +10,7 @@ app.use(cors());
 const options = {
     key: fs.readFileSync('./server.key'),
     cert: fs.readFileSync('./server.crt'),
-  };
-  
+};
 
 // Импорт маршрутов
 const schoolInfoRouter = require('./routes/schoolInfo');
