@@ -24,7 +24,8 @@ const subjectsRouter = require('./routes/subjects');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const scheduleDetailedRouter = require('./routes/scheduleDetailed');
-
+const Asset_teacherdRouter = require('./routes/Asset_teacher');
+const homeworkTeacherRouter = require('./routes/Homework_teacher');
 // Подключение маршрутов
 app.use('/api/School_Info', schoolInfoRouter);
 app.use('/api/director', directorRouter);
@@ -37,7 +38,8 @@ app.use('/api/subjects', subjectsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/scheduleDetailed', scheduleDetailedRouter);
-
+app.use('/api/Asset_teacher', Asset_teacherdRouter);
+app.use('/api/Homework_teacher', homeworkTeacherRouter);
 // Запуск HTTPS сервера на указанном порту
 http.createServer(options, app).listen(8443, () => {
     console.log('HTTPS сервер запущен на порту 8443');
